@@ -1,0 +1,31 @@
+server:
+  servlet:
+    context-path: /sysmanage
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+    url: jdbc:mysql://192.168.3.230:3306/sysmanage?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 111111
+    hikari:
+      connection-test-query: SELECT 1 FROM DUAL
+      connection-timeout: 5000
+      maximum-pool-size: 30
+      max-lifetime: 1800000
+      minimum-idle: 10
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      db-type: mysql
+  mapper-locations: mybatis/mapper/*Mapper.xml
+shiro:
+  anon-urls: /login
+  login-url: /unLogin
