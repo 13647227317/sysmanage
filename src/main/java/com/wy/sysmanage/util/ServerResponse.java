@@ -39,6 +39,10 @@ public class ServerResponse<T> implements Serializable {
         return build(ResponseCodeEm.SUCCESS);
     }
 
+    public static ServerResponse success(Object data) {
+        return new ServerResponse(ResponseCodeEm.SUCCESS.value(),ResponseCodeEm.SUCCESS.msg(),data);
+    }
+
     public static ServerResponse fail(ResponseCodeEm responseCodeEm) {
         return build(responseCodeEm);
     }

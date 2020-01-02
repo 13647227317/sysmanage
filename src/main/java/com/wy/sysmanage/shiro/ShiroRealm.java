@@ -1,19 +1,28 @@
 package com.wy.sysmanage.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.wy.sysmanage.entity.SysMenu;
+import com.wy.sysmanage.entity.SysRole;
 import com.wy.sysmanage.entity.SysUser;
+import com.wy.sysmanage.mapper.SysMenuMapper;
+import com.wy.sysmanage.mapper.SysRoleMapper;
 import com.wy.sysmanage.mapper.SysUserMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * shiro权限匹配与账号密码匹配
@@ -25,6 +34,12 @@ public class ShiroRealm extends AuthorizingRealm {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Resource
+    private SysRoleMapper sysRoleMapper;
+
+    @Resource
+    private SysMenuMapper sysMenuMapper;
+
     /**
      * 授权
      * @param principalCollection
@@ -32,7 +47,23 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        SimpleAuthorizationInfo authorizationInfo=new SimpleAuthorizationInfo();
+        Set<String> roleSet=new HashSet<>();
+        Set<String> permSet=new HashSet<>();
+        SysUser sysUser= (SysUser) principalCollection.getPrimaryPrincipal();
+        List<SysRole> userRoleList=sysRoleMapper.selectRoleByUserId(sysUser.getId());
+        if( !CollectionUtils.isEmpty(userRoleList) ){
+            userRoleList.forEach(role->{
+                roleSet.add(role.getRoleCode());
+                List<SysMenu> menuList=sysMenuMapper.selectMenuByRoleId(role.getId());
+                if( !CollectionUtils.isEmpty(menuList) ){
+                    menuList.forEach(menu->permSet.add(menu.getId().toString()));
+                }
+            });
+        }
+        authorizationInfo.setRoles(roleSet);
+        authorizationInfo.setStringPermissions(permSet);
+        return authorizationInfo;
     }
 
     /**

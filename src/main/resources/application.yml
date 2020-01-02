@@ -27,5 +27,7 @@ mybatis-plus:
       db-type: mysql
   mapper-locations: mybatis/mapper/*Mapper.xml
 shiro:
-  anon-urls: /login
+  anon-urls: /login,/swagger-ui.html,/webjars/**,/v2/**,/swagger-resources/**
   login-url: /unLogin
+  session:
+    timeout: 30

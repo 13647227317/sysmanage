@@ -19,4 +19,8 @@
         id, menu_name, user_name, status, parent_id, path, icon, update_time
     </sql>
 
+    <select id="selectMenuByRoleId" resultMap="BaseResultMap">
+        select t1.* from sys_menu t1,sys_role_menu t2 where t1.id=t2.menu_id and t2.role_id=#{roleId}
+    </select>
+
 </mapper>

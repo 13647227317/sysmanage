@@ -24,6 +24,11 @@ public class SysRole implements Serializable {
     private Long id;
 
     /**
+     * 角色编码
+     */
+    private String roleCode;
+
+    /**
      * 角色名称
      */
     private String roleName;
@@ -45,6 +50,15 @@ public class SysRole implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
     public String getRoleName() {
         return roleName;
     }

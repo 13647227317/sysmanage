@@ -3,7 +3,10 @@ package com.wy.sysmanage.shiro;
 import com.wy.sysmanage.util.SHA256Util;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +29,9 @@ public class ShiroConfig {
 
     @Value("${shiro.login-url}")
     private String loginUrl;
+
+    @Value("${shiro.session.timeout:30}")
+    private Long globalSessionTimeout;
 
     /**
      * Shiro基础配置
@@ -50,13 +56,38 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm){
+    public SecurityManager securityManager(ShiroRealm shiroRealm, CacheManager ehCacheManager){
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         DefaultWebSecurityManager defaultWebSecurityManager=new DefaultWebSecurityManager();
+        defaultWebSecurityManager.setSessionManager(new ShiroSessionManager(globalSessionTimeout));
+        defaultWebSecurityManager.setCacheManager(ehCacheManager);
         defaultWebSecurityManager.setRealm(shiroRealm);
         return defaultWebSecurityManager;
     }
 
+    @Bean
+    public EhCacheManager ehCacheManager(){
+        EhCacheManager ehCacheManager=new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
+        return ehCacheManager;
+    }
+
+    /**
+     * 鉴权advisor
+     * @param securityManager
+     * @return
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+        AuthorizationAttributeSourceAdvisor advisor=new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
+
+    /**
+     * 凭证匹配器
+     * @return
+     */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher=new HashedCredentialsMatcher();

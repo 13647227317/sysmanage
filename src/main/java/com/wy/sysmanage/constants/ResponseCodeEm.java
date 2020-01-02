@@ -29,7 +29,12 @@ public enum ResponseCodeEm {
     /**
      * 密码错误
      */
-    PASSWORD_ERROR("402","密码错误");
+    PASSWORD_ERROR("402","密码错误"),
+
+    /**
+     * 鉴权失败
+     */
+    INSUFFICIENT_AUTHORITY("403","权限不足");
 
     private String value;
 

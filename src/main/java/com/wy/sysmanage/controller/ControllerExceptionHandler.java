@@ -4,6 +4,7 @@ import com.wy.sysmanage.constants.ResponseCodeEm;
 import com.wy.sysmanage.util.ServerResponse;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class ControllerExceptionHandler {
 
         if( ex instanceof AuthenticationException){
             return ServerResponse.fail(ResponseCodeEm.USER_NOT_EXIST);
+        }
+        if( ex instanceof UnauthorizedException){
+            return ServerResponse.fail(ResponseCodeEm.INSUFFICIENT_AUTHORITY);
         }
         logger.error("",ex);
         return ServerResponse.fail(ResponseCodeEm.INTERNAL_SERVER_ERROR);
