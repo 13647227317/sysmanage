@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wy.sysmanage.entity.SysRole;
 import com.wy.sysmanage.mapper.SysRoleMapper;
 import com.wy.sysmanage.service.RoleService;
-import com.wy.sysmanage.util.ServerResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
