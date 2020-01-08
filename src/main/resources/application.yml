@@ -6,7 +6,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     driver-class-name: com.mysql.cj.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://192.168.3.230:3306/sysmanage?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/sysmanage?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root
     password: 111111
     hikari:
@@ -28,7 +28,9 @@ mybatis-plus:
       db-type: mysql
   mapper-locations: mybatis/mapper/*Mapper.xml
 shiro:
-  anon-urls: /login,/swagger-ui.html,/webjars/**,/v2/**,/swagger-resources/**
-  login-url: /unLogin
+  anon-urls: /user/login,/swagger-ui.html,/webjars/**,/v2/**,/swagger-resources/**
+  login-url: /user/unLogin
   session:
     timeout: 30
+default:
+  password: 111111

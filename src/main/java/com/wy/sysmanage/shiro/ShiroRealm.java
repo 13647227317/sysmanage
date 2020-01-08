@@ -7,6 +7,7 @@ import com.wy.sysmanage.entity.SysUser;
 import com.wy.sysmanage.mapper.SysMenuMapper;
 import com.wy.sysmanage.mapper.SysRoleMapper;
 import com.wy.sysmanage.mapper.SysUserMapper;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,6 +16,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -57,7 +59,7 @@ public class ShiroRealm extends AuthorizingRealm {
                 roleSet.add(role.getRoleCode());
                 List<SysMenu> menuList=sysMenuMapper.selectMenuByRoleId(role.getId());
                 if( !CollectionUtils.isEmpty(menuList) ){
-                    menuList.forEach(menu->permSet.add(menu.getId().toString()));
+                    menuList.forEach(menu->permSet.add(menu.getMenuCode()));
                 }
             });
         }
@@ -74,15 +76,15 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String userName= (String) authenticationToken.getPrincipal();
+        String userAccount= (String) authenticationToken.getPrincipal();
         QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysUser::getUserAccount,userName);
+        queryWrapper.lambda().eq(SysUser::getUserAccount,userAccount);
         SysUser sysUser=sysUserMapper.selectOne(queryWrapper);
         if( null==sysUser ){
             throw new AuthenticationException();
         }
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo( sysUser,sysUser.getUserPasswd(),
-                ByteSource.Util.bytes(userName),getName());
+                ByteSource.Util.bytes(userAccount),getName());
         return authenticationInfo;
     }
 }

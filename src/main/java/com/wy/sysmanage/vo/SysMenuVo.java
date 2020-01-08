@@ -1,29 +1,17 @@
-package com.wy.sysmanage.entity;
+package com.wy.sysmanage.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * <p>
- * 
- * </p>
- *
+ * 菜单信息Vo
  * @author wangyong
- * @since 2019-12-30
  */
-@Getter
-@Setter
-@ToString
-public class SysMenu implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Data
+public class SysMenuVo {
     /**
      * 主键
      */
@@ -45,11 +33,34 @@ public class SysMenu implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 菜单顺序
+     */
+    private Integer menuOrder;
 
     /**
      * 上级菜单ID
      */
     private Long parentId;
 
+    /**
+     * 请求路径
+     */
+    private String path;
+
+    /**
+     * 菜单对应页面
+     */
+    private String menuView;
+
+    /**
+     * 菜单图标
+     */
+    private String icon;
+
+    /**
+     * 子菜单列表
+     */
+    private List<SysMenuVo> childrenList;
 
 }

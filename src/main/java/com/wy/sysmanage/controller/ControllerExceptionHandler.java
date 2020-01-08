@@ -1,6 +1,7 @@
 package com.wy.sysmanage.controller;
 
 import com.wy.sysmanage.constants.ResponseCodeEm;
+import com.wy.sysmanage.exception.BizException;
 import com.wy.sysmanage.util.ServerResponse;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -36,6 +37,9 @@ public class ControllerExceptionHandler {
         }
         if( ex instanceof UnauthorizedException){
             return ServerResponse.fail(ResponseCodeEm.INSUFFICIENT_AUTHORITY);
+        }
+        if( ex instanceof BizException){
+            return ServerResponse.fail("401",ex.getMessage());
         }
         logger.error("",ex);
         return ServerResponse.fail(ResponseCodeEm.INTERNAL_SERVER_ERROR);
