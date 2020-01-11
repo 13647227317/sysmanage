@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wy.sysmanage.entity.SysUser;
 import com.wy.sysmanage.entity.SysUserRole;
 import com.wy.sysmanage.exception.BizException;
-import com.wy.sysmanage.mapper.SysMenuMapper;
 import com.wy.sysmanage.mapper.SysUserMapper;
 import com.wy.sysmanage.service.SysUserRoleService;
 import com.wy.sysmanage.service.UserService;
