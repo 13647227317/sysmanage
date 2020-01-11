@@ -1,6 +1,7 @@
 package com.wy.sysmanage.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wy.sysmanage.constants.ResponseCodeEm;
 import com.wy.sysmanage.entity.SysMenu;
@@ -58,7 +59,7 @@ public class UserController {
 
     @ApiOperation(value = "获取当前用户信息")
     @GetMapping("/info")
-    public ServerResponse getInfo(){
+    public ServerResponse<UserInfoVo> getInfo(){
         Subject subject=SecurityUtils.getSubject();
         SysUser sysUser= (SysUser) subject.getPrincipal();
         List<String> menuCodeList=new ArrayList<>();
@@ -75,7 +76,7 @@ public class UserController {
 
     @ApiOperation(value="用户分页查询")
     @GetMapping("/selectPage")
-    public ServerResponse selectPage(SysUser sysUser, Page page){
+    public ServerResponse<IPage<SysUser>> selectPage(SysUser sysUser, Page page){
         IPage<SysUser> userPage=userService.selectPage(sysUser,page);
         return ServerResponse.success(userPage);
     }
@@ -101,4 +102,23 @@ public class UserController {
         return ServerResponse.success();
     }
 
+    @ApiOperation(value = "密码重置")
+    @PostMapping("/resetPassword/{userId}")
+    public ServerResponse resetPassword(@PathVariable("userId") Long userId){
+        userService.resetPassword(userId);
+        return ServerResponse.success();
+    }
+
+    @ApiOperation(value = "根据用户名查询用户")
+    @GetMapping("/getUserByAccount/{userAccount}")
+    public ServerResponse<SysUser> getUserByAccount(@PathVariable("userAccount") String userAccount){
+        SysUser result=null;
+        SysUser sysUser=new SysUser();
+        sysUser.setUserAccount(userAccount);
+        List<SysUser> list=userService.selectList(sysUser);
+        if( !CollectionUtils.isEmpty(list) ){
+            result=list.get(0);
+        }
+        return ServerResponse.success(result);
+    }
 }

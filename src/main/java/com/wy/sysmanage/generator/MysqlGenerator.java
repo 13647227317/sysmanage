@@ -23,7 +23,7 @@ public class MysqlGenerator {
         boolean startWithI = false;
         String projectName = "sysmanage";
         String packageName = "com.wy.sysmanage";
-        String tableName = "sys_menu";
+        String tableName = "sys_user_role";
         g.generateByTables(startWithI,projectName,packageName,tableName);
     }
     /**
@@ -66,7 +66,11 @@ public class MysqlGenerator {
                 .setPackageInfo(packageConfig)
                 .setTemplateEngine(new FreemarkerTemplateEngine())
                 .setCfg(injectionConfig)
-                .setTemplate(new TemplateConfig().setController(null).setService(null).setServiceImpl(null).setXml(null))
+                .setTemplate(new TemplateConfig()
+                        .setController(null)
+//                        .setService(null)
+//                        .setServiceImpl(null)
+                        .setXml(null))
                 .execute();
     }
 
@@ -121,7 +125,7 @@ public class MysqlGenerator {
         return new StrategyConfig()
                 // 全局大写命名 ORACLE 注意
                 .setCapitalMode(true)
-                .setEntityLombokModel(false)
+                .setEntityLombokModel(true)
                 .setRestControllerStyle(false)
                 //从数据库表到文件的命名策略
                 .setNaming(NamingStrategy.underline_to_camel)
@@ -158,10 +162,10 @@ public class MysqlGenerator {
      */
     private DataSourceConfig getDataSourceConfig() {
         return new DataSourceConfig().setDbType(DbType.MYSQL)
-                .setUrl("jdbc:mysql://192.168.3.230:3306/sysmanage?serverTimezone=Hongkong&nullCatalogMeansCurrent=true&characterEncoding=UTF-8&useSSL=false")
+                .setUrl("jdbc:mysql://localhost:3306/sysmanage?serverTimezone=Hongkong&nullCatalogMeansCurrent=true&characterEncoding=UTF-8&useSSL=false")
                 .setUsername("root")
                 .setPassword("111111")
-                .setDriverName("com.mysql.jdbc.Driver");
+                .setDriverName("com.mysql.cj.jdbc.Driver");
     }
 
 

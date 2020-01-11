@@ -39,7 +39,7 @@ public class ServerResponse<T> implements Serializable {
         return build(ResponseCodeEm.SUCCESS);
     }
 
-    public static ServerResponse success(Object data) {
+    public static <T> ServerResponse<T> success(T data) {
         return new ServerResponse(ResponseCodeEm.SUCCESS.value(),ResponseCodeEm.SUCCESS.msg(),data);
     }
 

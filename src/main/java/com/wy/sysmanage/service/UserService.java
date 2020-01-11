@@ -3,6 +3,8 @@ package com.wy.sysmanage.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wy.sysmanage.entity.SysUser;
 
+import java.util.List;
+
 
 /**
  * 用户服务接口
@@ -36,4 +38,17 @@ public interface UserService {
      * @param sysUser
      */
     void saveUser(SysUser sysUser);
+
+    /**
+     * 密码重置
+     * @param userId
+     */
+    void resetPassword(Long userId);
+
+    /**
+     * 根据查询对象查询用户
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> selectList(SysUser sysUser);
 }

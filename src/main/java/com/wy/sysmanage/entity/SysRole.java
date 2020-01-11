@@ -1,7 +1,11 @@
 package com.wy.sysmanage.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -13,6 +17,7 @@ import java.io.Serializable;
  * @author wangyong
  * @since 2019-12-30
  */
+@Data
 public class SysRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,53 +46,11 @@ public class SysRole implements Serializable {
     /**
      * 更新时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
-    public Long getId() {
-        return id;
-    }
+    @TableField(exist = false)
+    private String menuIds;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "SysRole{" +
-            "id=" + id +
-            ", roleName=" + roleName +
-            ", remark=" + remark +
-            ", updateTime=" + updateTime +
-        "}";
-    }
 }
