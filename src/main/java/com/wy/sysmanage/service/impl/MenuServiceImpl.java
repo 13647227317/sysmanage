@@ -1,7 +1,6 @@
 package com.wy.sysmanage.service.impl;
 
 import com.wy.sysmanage.entity.SysMenu;
-import com.wy.sysmanage.entity.SysUser;
 import com.wy.sysmanage.mapper.SysMenuMapper;
 import com.wy.sysmanage.service.MenuService;
 import com.wy.sysmanage.vo.MenuTreeVo;
