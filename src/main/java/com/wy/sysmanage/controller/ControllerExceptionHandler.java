@@ -1,19 +1,16 @@
 package com.wy.sysmanage.controller;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.wy.sysmanage.constants.ResponseCodeEm;
 import com.wy.sysmanage.exception.BizException;
 import com.wy.sysmanage.util.ServerResponse;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * 自定义异常处理器
@@ -22,7 +19,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    private static final Logger logger= LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    private static final Log log= LogFactory.get();
 
     @ExceptionHandler(Throwable.class)
     @ResponseBody
@@ -41,7 +38,7 @@ public class ControllerExceptionHandler {
         if( ex instanceof BizException){
             return ServerResponse.fail("401",ex.getMessage());
         }
-        logger.error("",ex);
+        log.error("",ex);
         return ServerResponse.fail(ResponseCodeEm.INTERNAL_SERVER_ERROR);
     }
 
