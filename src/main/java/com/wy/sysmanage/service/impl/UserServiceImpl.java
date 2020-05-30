@@ -10,7 +10,8 @@ import com.wy.sysmanage.exception.BizException;
 import com.wy.sysmanage.mapper.SysUserMapper;
 import com.wy.sysmanage.service.SysUserRoleService;
 import com.wy.sysmanage.service.UserService;
-import com.wy.sysmanage.util.SHA256Util;
+import com.wy.sysmanage.util.ShiroUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(SysUser sysUser) {
         sysUser.setUpdateTime(LocalDateTime.now());
-        sysUser.setUserPasswd(SHA256Util.sha256(defaultPassword,sysUser.getUserAccount()));
+        sysUser.setUserPasswd(ShiroUtil.createPassword(defaultPassword, sysUser.getUserAccount()));
         sysUserMapper.insert(sysUser);
     }
 
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService {
         if( null==oldUser ){
             throw new BizException("用户不存在");
         }
-        oldUser.setUserPasswd(SHA256Util.sha256(defaultPassword,oldUser.getUserAccount()));
+        oldUser.setUserPasswd(ShiroUtil.createPassword(defaultPassword,oldUser.getUserAccount()));
         oldUser.setUpdateTime(LocalDateTime.now());
         sysUserMapper.updateById(oldUser);
     }

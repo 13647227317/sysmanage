@@ -1,6 +1,7 @@
 package com.wy.sysmanage.shiro;
 
-import com.wy.sysmanage.util.SHA256Util;
+import cn.hutool.crypto.digest.DigestAlgorithm;
+import com.wy.sysmanage.util.ShiroUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
@@ -92,9 +93,9 @@ public class ShiroConfig {
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher=new HashedCredentialsMatcher();
         // 散列算法:这里使用SHA256算法;
-        hashedCredentialsMatcher.setHashAlgorithmName(SHA256Util.HASH_ALGORITHM_NAME);
+        hashedCredentialsMatcher.setHashAlgorithmName(DigestAlgorithm.SHA256.getValue());
         // 散列的次数，比如散列两次，相当于 md5(md5(""));
-        hashedCredentialsMatcher.setHashIterations(SHA256Util.HASH_ITERATIONS);
+        hashedCredentialsMatcher.setHashIterations(ShiroUtil.HASH_ITERATIONS);
         return hashedCredentialsMatcher;
     }
 }
